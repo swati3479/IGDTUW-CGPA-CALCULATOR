@@ -4,7 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IGDTUW CGPA Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+        td {
+            text-align: center;
+            padding: 8px;
+        }
+        input[type="number"] {
+            width: 80%;
+            padding: 5px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e7f3fe;
+            border: 1px solid #bee1f7;
+            border-radius: 4px;
+            color: #0056b3;
+        }
+        .add-button {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -31,6 +104,68 @@
         <button onclick="calculateCGPA()">Calculate CGPA</button>
         <div class="result" id="result"></div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        function addRow() {
+            const tbody = document.getElementById('subjects');
+            const row = document.createElement('tr');
+            row.innerHTML = 
+                <td>Subject ${tbody.children.length + 1}</td>
+                <td><input type="number" class="marks" min="0" max="100"></td>
+                <td><input type="number" class="credits" min="1" max="5" value="3"></td>
+                <td class="grade"></td>
+            ;
+            tbody.appendChild(row);
+        }
+
+        function calculateGrade(marks) {
+            if (marks >= 93 && marks <= 100) return 'A+';
+            if (marks >= 85 && marks < 93) return 'A';
+            if (marks >= 77 && marks < 85) return 'B+';
+            if (marks >= 69 && marks < 77) return 'B';
+            if (marks >= 61 && marks < 69) return 'C+';
+            if (marks >= 53 && marks < 61) return 'C';
+            if (marks >= 45 && marks < 53) return 'D';
+            if (marks < 45) return 'F';
+            return '';
+        }
+
+        function calculateGradePoint(grade) {
+            switch (grade) {
+                case 'A+': return 10;
+                case 'A': return 9;
+                case 'B+': return 8;
+                case 'B': return 7;
+                case 'C+': return 6;
+                case 'C': return 5;
+                case 'D': return 4;
+                case 'F': return 0;
+                default: return 0;
+            }
+        }
+
+        function calculateCGPA() {
+            const marksInputs = document.querySelectorAll('.marks');
+            const creditsInputs = document.querySelectorAll('.credits');
+            const grades = document.querySelectorAll('.grade');
+
+            let totalCredits = 0;
+            let weightedGradePoints = 0;
+
+            marksInputs.forEach((input, index) => {
+                const marks = parseFloat(input.value);
+                const credits = parseFloat(creditsInputs[index].value);
+                const grade = calculateGrade(marks);
+                grades[index].textContent = grade;
+
+                const gradePoint = calculateGradePoint(grade);
+                totalCredits += credits;
+                weightedGradePoints += gradePoint * credits;
+            });
+
+            const cgpa = (weightedGradePoints / totalCredits).toFixed(2);
+            document.getElementById('result').textContent = Your CGPA is: ${cgpa};
+        }
+    </script>
 </body>
 </html>
