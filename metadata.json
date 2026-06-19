@@ -1,0 +1,6 @@
+{
+  "name": "IGDTUW CGPA Calculator",
+  "description": "A highly accurate, accessible, and responsive CGPA and SGPA calculator for Indira Gandhi Delhi Technical University for Women (IGDTUW) students, featuring a built-in CGPA-to-percentage converter, dark mode, and SEO enhancements.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
